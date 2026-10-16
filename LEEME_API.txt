@@ -1,0 +1,25 @@
+API DE EMPLEABILIDAD Y RED DE EGRESADOS  (FastAPI + Neon)
+==========================================================
+
+EN TU COMPUTADOR
+1) Copia .env.example como .env y pon la connection string de Neon en DATABASE_URL.
+   (Neon: botón "Connect" > copia la cadena que empieza con postgresql://...)
+2) pip install -r requirements.txt
+3) python -m uvicorn main:app --reload
+4) Abre http://127.0.0.1:8000/salud
+      -> debe decir  "base_de_datos": "conectada"
+   Si sale un error 503, la contraseña o la dirección de Neon están mal.
+5) Documentación para probar: http://127.0.0.1:8000/docs
+
+EN RENDER
+  Build Command : pip install -r requirements.txt
+  Start Command : uvicorn main:app --host 0.0.0.0 --port $PORT
+  Environment   : DATABASE_URL = (la connection string de Neon)
+                  PYTHON_VERSION = 3.13.5
+  Cuando termine, abre  https://TU-API.onrender.com/salud
+  (el plan gratuito se duerme: abre /salud un par de minutos antes de presentar).
+
+IMPORTANTE
+- Eliminar borra de verdad la fila (ya no hay "fecha_eliminacion").
+- No subas el archivo .env a GitHub.
+- La API acepta peticiones desde cualquier página *.netlify.app y *.vercel.app.
