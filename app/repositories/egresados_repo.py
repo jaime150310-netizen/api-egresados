@@ -122,17 +122,15 @@ class EgresadosRepository:
         return actualizado is not None
 
     def eliminar(self, id_egresado: int):
+        # Eliminación lógica: la fila NO se borra, solo cambia el estado.
 
         conn = self.db.get_connection()
         cursor = conn.cursor()
-        # Primero se borra lo que depende de este egresado
-        cursor.execute("DELETE FROM postulaciones WHERE id_egresado IN (SELECT id_egresado FROM egresados WHERE id_egresado = %s)", (id_egresado,))
-        cursor.execute("DELETE FROM encuestas_empleabilidad WHERE id_egresado IN (SELECT id_egresado FROM egresados WHERE id_egresado = %s)", (id_egresado,))
-        cursor.execute("DELETE FROM perfiles_profesionales WHERE id_egresado IN (SELECT id_egresado FROM egresados WHERE id_egresado = %s)", (id_egresado,))
-
 
         cursor.execute("""
-            DELETE FROM egresados
+            UPDATE egresados
+            SET estado = FALSE,
+                fecha_actualizacion = CURRENT_TIMESTAMP
             WHERE id_egresado = %s
             RETURNING id_egresado
         """, (id_egresado,))

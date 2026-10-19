@@ -141,12 +141,15 @@ class PerfilesProfesionalesRepository:
         return actualizado is not None
 
     def eliminar(self, id_perfil: int):
+        # Eliminación lógica: la fila NO se borra, solo cambia el estado.
 
         conn = self.db.get_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
-            DELETE FROM perfiles_profesionales
+            UPDATE perfiles_profesionales
+            SET estado = FALSE,
+                fecha_actualizacion = CURRENT_TIMESTAMP
             WHERE id_perfil = %s
             RETURNING id_perfil
         """, (id_perfil,))

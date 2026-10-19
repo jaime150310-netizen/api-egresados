@@ -133,12 +133,15 @@ class EmpresasRepository:
         return actualizado is not None
 
     def eliminar(self, id_empresa: int):
+        # Eliminación lógica: la fila NO se borra, solo cambia el estado.
 
         conn = self.db.get_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
-            DELETE FROM empresas
+            UPDATE empresas
+            SET estado = FALSE,
+                fecha_actualizacion = CURRENT_TIMESTAMP
             WHERE id_empresa = %s
             RETURNING id_empresa
         """, (id_empresa,))

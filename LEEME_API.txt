@@ -20,6 +20,6 @@ EN RENDER
   (el plan gratuito se duerme: abre /salud un par de minutos antes de presentar).
 
 IMPORTANTE
-- Eliminar borra de verdad la fila (ya no hay "fecha_eliminacion").
+- Eliminar NO borra la fila: cambia el campo estado (eliminación lógica). Ya no existe "fecha_eliminacion".
 - No subas el archivo .env a GitHub.
 - La API acepta peticiones desde cualquier página *.netlify.app y *.vercel.app.

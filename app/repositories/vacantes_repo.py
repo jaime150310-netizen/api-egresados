@@ -150,15 +150,15 @@ class VacantesRepository:
         return actualizado is not None
 
     def eliminar(self, id_vacante: int):
+        # Eliminación lógica: la fila NO se borra, solo cambia el estado.
 
         conn = self.db.get_connection()
         cursor = conn.cursor()
-        # Primero se borran las postulaciones a esta vacante
-        cursor.execute("DELETE FROM postulaciones WHERE id_vacante = %s", (id_vacante,))
-
 
         cursor.execute("""
-            DELETE FROM vacantes
+            UPDATE vacantes
+            SET estado = 'Inactiva',
+                fecha_actualizacion = CURRENT_TIMESTAMP
             WHERE id_vacante = %s
             RETURNING id_vacante
         """, (id_vacante,))

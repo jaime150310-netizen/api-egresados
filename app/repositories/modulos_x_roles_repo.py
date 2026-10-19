@@ -112,12 +112,15 @@ class ModulosXRolesRepository:
         return actualizado is not None
 
     def eliminar(self, id_modulo_rol: int):
+        # Eliminación lógica: la fila NO se borra, solo cambia el estado.
 
         conn = self.db.get_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
-            DELETE FROM modulos_x_roles
+            UPDATE modulos_x_roles
+            SET estado = FALSE,
+                fecha_actualizacion = CURRENT_TIMESTAMP
             WHERE id_modulo_rol = %s
             RETURNING id_modulo_rol
         """, (id_modulo_rol,))

@@ -110,12 +110,15 @@ class PostulacionesRepository:
         return actualizado is not None
 
     def eliminar(self, id_postulacion: int):
+        # Eliminación lógica: la fila NO se borra, solo cambia el estado.
 
         conn = self.db.get_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
-            DELETE FROM postulaciones
+            UPDATE postulaciones
+            SET estado = 'Retirada',
+                fecha_actualizacion = CURRENT_TIMESTAMP
             WHERE id_postulacion = %s
             RETURNING id_postulacion
         """, (id_postulacion,))

@@ -15,6 +15,7 @@ class EncuestasEmpleabilidadRepository:
         cursor.execute("""
             SELECT *
             FROM encuestas_empleabilidad
+            WHERE estado = TRUE
             ORDER BY id_encuesta ASC
         """)
 
@@ -154,12 +155,15 @@ class EncuestasEmpleabilidadRepository:
         return actualizado is not None
 
     def eliminar(self, id_encuesta: int):
+        # Eliminación lógica: la fila NO se borra, solo cambia el estado.
 
         conn = self.db.get_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
-            DELETE FROM encuestas_empleabilidad
+            UPDATE encuestas_empleabilidad
+            SET estado = FALSE,
+                fecha_actualizacion = CURRENT_TIMESTAMP
             WHERE id_encuesta = %s
             RETURNING id_encuesta
         """, (id_encuesta,))
